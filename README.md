@@ -1,4 +1,4 @@
-Run Following Commands and Cloning Repo :-
+Run Following Commands after Cloning Repo :-
 
 cd client ->
 npm i ->
