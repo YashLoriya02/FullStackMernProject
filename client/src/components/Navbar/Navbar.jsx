@@ -4,7 +4,7 @@ import "./Navbar.css"
 import { useAuth } from '../../store/auth'
 
 const Navbar = () => {
-    const { isLoggedIn } = useAuth()
+    const { isLoggedIn, isUserAdmin } = useAuth()
     return (
         <div>
             <header>
@@ -14,24 +14,33 @@ const Navbar = () => {
                     </div>
                     <nav>
                         <ul className='nav_ul'>
+                            {/* {
+                                isUserAdmin ?
+                                    <li>
+                                        <NavLink to="/admin">Admin</NavLink>
+                                    </li> : ""
+                            } */}
                             <li>
                                 <NavLink to="/">Home</NavLink>
                             </li>
-                            <li>
-                                <NavLink to="/about">About</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/services">Service</NavLink>
-                            </li>
-                            {
-                                isLoggedIn ?
-                                    <li>
-                                        <NavLink to="/contact">Contact</NavLink>
-                                    </li> : ""
-                            }
                             {
                                 isLoggedIn ? (
                                     <>
+                                        <li>
+                                            <NavLink to="/about">About</NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink to="/services">Service</NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink to="/contact">Contact</NavLink>
+                                        </li>
+                                        {
+                                            isUserAdmin ?
+                                                <li>
+                                                    <NavLink to="/admin">Admin</NavLink>
+                                                </li> : ""
+                                        }
                                         <li>
                                             <NavLink to="/logout">Logout</NavLink>
                                         </li>

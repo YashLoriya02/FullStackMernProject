@@ -3,8 +3,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
+
     const [token, setToken] = useState(localStorage.getItem('token'))
     const [user, setUser] = useState("")
+    const [services, setServices] = useState([])
+    const [allUsersData, setAllUsersData] = useState("")
+    const [allContactsData, setAllContactsData] = useState("")
 
     const storeToken = (token) => {
         setToken(token)
@@ -12,6 +16,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const isLoggedIn = !!token
+    const isUserAdmin = user.isAdmin
 
     const logoutUser = () => {
         setToken("")
@@ -56,7 +61,7 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    const [services, setServices] = useState([])
+
     const getServices = async () => {
         try {
             const response = await fetch("http://localhost:5000/api/auth/service", {
@@ -67,20 +72,56 @@ export const AuthProvider = ({ children }) => {
                 setServices(data)
             }
         } catch (error) {
-            console.log("Services Error: ",error)
+            console.log("Services Error: ", error)
+        }
+    }
+
+    const getAllUsers = async () => {
+        try {
+            if (token) {
+                const response = await fetch("http://localhost:5000/api/admin/users", {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                const data = await response.json()
+                if (response.ok) {
+                    setAllUsersData(data)
+                }
+            }
+        } catch (error) {
+            console.log("Admin Data Error: ", error)
+        }
+    }
+
+    const getAllContacts = async () => {
+        try {
+            if (token) {
+                const response = await fetch("http://localhost:5000/api/admin/contact", {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                const data = await response.json()
+                if (response.ok) {
+                    setAllContactsData(data)
+                }
+            }
+        } catch (error) {
+            console.log("Admin Data Error: ", error)
         }
     }
 
     useEffect(() => {
-        getServices()
-    }, [])
-
-    useEffect(() => {
         userAuthentication()
         getServices()
+        getAllUsers()
+        getAllContacts()
     }, [token])
 
-    return <AuthContext.Provider value={{ isLoggedIn, storeToken, logoutUser, user, services }}>
+    return <AuthContext.Provider value={{ isLoggedIn, storeToken, logoutUser, user, services, allUsersData, allContactsData, isUserAdmin }}>
         {children}
     </AuthContext.Provider>
 }
