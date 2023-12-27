@@ -88,6 +88,7 @@ export const AuthProvider = ({ children }) => {
                 const data = await response.json()
                 if (response.ok) {
                     setAllUsersData(data)
+                    // console.log(data)
                 }
             }
         } catch (error) {
@@ -121,7 +122,7 @@ export const AuthProvider = ({ children }) => {
         getAllContacts()
     }, [token])
 
-    return <AuthContext.Provider value={{ isLoggedIn, storeToken, logoutUser, user, services, allUsersData, allContactsData, isUserAdmin }}>
+    return <AuthContext.Provider value={{ isLoggedIn, storeToken, logoutUser, user, services, allUsersData, allContactsData, isUserAdmin, token, setAllUsersData, setAllContactsData }}>
         {children}
     </AuthContext.Provider>
 }

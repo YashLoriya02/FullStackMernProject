@@ -592,30 +592,93 @@ form div {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    gap: 10px;
+}
+
+.table_p {
+    margin: 10px;
+}
+
+table {
+    width: 100vw;
+    font-size: 3rem;
+    padding: 4rem;
+}
+
+tr {
+    text-align: center;
+}
+
+th,
+td {
+    padding: 10px 5px;
+    letter-spacing: 0.1rem;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+}
+
+tr:nth-child(odd) {
+    background-color: #f9f2f2ef;
+    color: black;
+}
+
+.edit_btn {
+    border: 2px solid var(--btn-color);
+    padding: 0.7rem 3rem;
+    color: var(--btn-color);
+    background: none;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+.delete_btn {
+    border: 2px solid red;
+    padding: 0.7rem 2.5rem;
+    background: none;
+    color: red;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+.delete_btn:hover {
+    color: white;
+    background-color: red;
+}
+
+.edit_btn:hover {
+    color: white;
+    background-color: var(--btn-color);
 }
 
 .link_admin:hover {
-    background: none;
+    transform: scale(1.05);
 }
 
 .link_admin {
     color: white;
-    background-color: var(--btn-color);
     padding: 1rem 5rem;
     border-radius: 10px;
     border: 2px solid var(--btn-color);
+    transition: all 0.15s ease-in-out;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.link_admin.active {
+    background-color: var(--btn-color);
 }
 
 .content .h2 {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.message_admin {
-    width: 30vw;
-    font-size: 2rem;
-    margin: 1rem 3rem;
-    font-weight: bolder;
+.content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 ::-webkit-scrollbar {

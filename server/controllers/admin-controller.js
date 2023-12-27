@@ -26,4 +26,53 @@ const getAllContacts = async (req, res) => {
     }
 }
 
-module.exports = { getAllUsers, getAllContacts }
+const deleteUser = async (req, res) => {
+    try {
+        const userEmail = req.params.email;
+        const user = await User.findOne({ email: userEmail });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        if (!user.isAdmin) {
+            const deletedUser = await User.deleteOne({ email: userEmail });
+
+            if (deletedUser.deletedCount === 1) {
+                return res.status(200).json({ message: "User Deleted Successfully.", deletedUser });
+            } else {
+                return res.status(500).json({ message: "Error Deleting user" });
+            }
+        }
+        else {
+            console.log(`Cannot delete admin user with email ${userEmail}`);
+            return res.status(500).json({ message: "Cannot Delete Admin" });
+        }
+    } catch (error) {
+        console.log(`Error in Deleting User: ${error}`);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+const deleteContact = async (req, res) => {
+    try {
+        const userEmail = req.params.email;
+        const user = await Contact.findOne({ email: userEmail });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const deletedContact = await Contact.deleteOne({ email: userEmail });
+
+        if (deletedContact.deletedCount === 1) {
+            return res.status(200).json({ message: "Contact Deleted Successfully.", deletedContact });
+        } else {
+            return res.status(500).json({ message: "Error Deleting Contact" });
+        }
+
+    } catch (error) {
+        console.log(`Error in Deleting User: ${error}`);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+module.exports = { getAllUsers, getAllContacts, deleteUser, deleteContact }
