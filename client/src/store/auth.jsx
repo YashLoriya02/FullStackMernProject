@@ -36,31 +36,11 @@ export const AuthProvider = ({ children }) => {
                     const data = await response.json()
                     setUser(data.userData)
                 }
-                try {
-                    if (token) {
-                        const response = await fetch("http://localhost:5000/api/auth/user", {
-                            method: "GET",
-                            headers: {
-                                Authorization: `Bearer ${token}`
-                            }
-                        })
-                        if (response.ok) {
-                            const data = await response.json()
-                            setUser(data.userData)
-                        }
-                        else {
-                            setUser("")
-                        }
-                    }
-                } catch (error) {
-                    console.log(error)
-                }
             }
         } catch (error) {
             console.log(error)
         }
     }
-
 
     const getServices = async () => {
         try {
@@ -88,7 +68,6 @@ export const AuthProvider = ({ children }) => {
                 const data = await response.json()
                 if (response.ok) {
                     setAllUsersData(data)
-                    // console.log(data)
                 }
             }
         } catch (error) {
@@ -134,3 +113,4 @@ export const useAuth = () => {
     }
     return authContextValue
 }
+

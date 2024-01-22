@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../store/auth";
 import { toast } from "react-toastify"
 import { FaEye } from "react-icons/fa";
@@ -110,7 +110,7 @@ const Login = () => {
                   <div className="password_container">
                     <label htmlFor="password">Password</label>
                     <input
-                      type={ selected ? "text" : "password"}
+                      type={selected ? "text" : "password"}
                       name="password"
                       value={user.password}
                       onChange={handleInput}
@@ -120,8 +120,10 @@ const Login = () => {
                       {selected ? <FaEye className="icon_eye" /> : <FaEyeSlash className="icon_eye" />}
                     </div>
                   </div>
-                  <br />
-                  <button type="submit" className="btn btn-submit">
+                  <div className="forgot">
+                    <Link className="changePasswordLinkLogin" to={`/forgotPassword`}>Forgot Password?</Link>
+                  </div>
+                  <button type="submit" className="btn_submit">
                     Login Now
                   </button>
                 </form>

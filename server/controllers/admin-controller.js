@@ -1,5 +1,8 @@
+require('dotenv').config();
+
 const Contact = require("../models/contact-model")
 const User = require("../models/user-model")
+const nodemailer = require("nodemailer")
 
 const getAllUsers = async (req, res) => {
     try {
@@ -75,4 +78,72 @@ const deleteContact = async (req, res) => {
     }
 }
 
-module.exports = { getAllUsers, getAllContacts, deleteUser, deleteContact }
+const UpdateUser = async (req, res) => {
+    try {
+        const filter = { _id: req.params.id }
+        const update = { $set: req.body }
+        const result = await User.updateOne(filter, update);
+        if (result.modifiedCount === 0) {
+            res.status(404).json({ error: 'User not found' });
+        } else {
+            res.status(200).json({ message: 'User Updated Successfully' });
+        }
+    } catch (error) {
+        console.log(`Error Updating User ${error}`)
+        res.status(500).json(`Internal Server Error.`)
+    }
+}
+
+const getUser = async (req, res) => {
+    try {
+        const id = req.params.id
+        const users = await User.findOne({ _id: id }).select({ password: 0 })
+        if (!users || users.length === 0) {
+            return res.status(404).json({ message: "No Users Found" })
+        }
+        return res.status(200).json(users)
+    } catch (error) {
+        console.log(`Error in Fetching Users ${error}`)
+    }
+}
+
+const replyToUser = async (req, res) => {
+    const id = req.params.id
+    const user = await Contact.findOne({ _id: id })
+    const userEmail = user.email
+    const senderEmail = 'alientesting02@gmail.com'
+    const message = req.body
+
+    if (!user) {
+        return res.status(500).json({ message: "User Does not Exist." })
+    }
+    else {
+        try {
+            const transporter = nodemailer.createTransport({
+                host: process.env.EMAIL_HOST,
+                port: process.env.EMAIL_PORT,
+                auth: {
+                    user: process.env.EMAIL_USER,
+                    pass: process.env.EMAIL_PASS
+                }
+            });
+
+            const mailOptions = {
+                from: `MERN Support <${senderEmail}>`,
+                to: userEmail,
+                subject: 'Reply to Your Query',
+                text: `MERN Team :- ${message.query}`
+            };
+
+            await transporter.sendMail(mailOptions);
+
+            res.status(200).json({ message: "Replied Successfully to User's Query." })
+        } catch (error) {
+            res.status(500).json({ message: "Server Error in Sending Mail." })
+            console.log(error)
+        }
+    }
+}
+
+module.exports = { getAllUsers, getAllContacts, deleteUser, deleteContact, UpdateUser, getUser, replyToUser }
+

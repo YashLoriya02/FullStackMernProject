@@ -1,7 +1,7 @@
 import React from 'react'
 import { useAuth } from '../store/auth'
 import { toast } from 'react-toastify'
-
+import { Link } from 'react-router-dom'
 
 const AdminContact = () => {
   const { allContactsData, token, setAllContactsData } = useAuth()
@@ -52,7 +52,7 @@ const AdminContact = () => {
                 <th><p style={{ fontSize: "4rem" }} className='table_p' >Username</p></th>
                 <th><p style={{ fontSize: "4rem" }} className='table_p' >Email</p></th>
                 <th><p style={{ fontSize: "4rem" }} className='table_p' >Message</p></th>
-                <th><p style={{ fontSize: "4rem" }} className='table_p' >Edit</p></th>
+                <th><p style={{ fontSize: "4rem" }} className='table_p' >Reply</p></th>
                 <th><p style={{ fontSize: "4rem" }} className='table_p' >Delete</p></th>
               </tr>
             </thead>
@@ -66,7 +66,7 @@ const AdminContact = () => {
                           <td>{data.username}</td>
                           <td>{data.email}</td>
                           <td>{data.message}</td>
-                          <td> <button className='edit_btn'>Edit</button></td>
+                          <td> <Link to={`/admin/contacts/${data._id}/reply`} className='edit_btn'>Reply</Link></td>
                           <td> <button onClick={() => deleteContact(data.email, data.message)} className='delete_btn'>Delete</button></td>
                         </tr>
                       </tbody>

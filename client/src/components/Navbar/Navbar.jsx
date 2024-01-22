@@ -2,6 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import "./Navbar.css"
 import { useAuth } from '../../store/auth'
+import { CgProfile } from "react-icons/cg";
 
 const Navbar = () => {
     const { isLoggedIn, isUserAdmin } = useAuth()
@@ -57,6 +58,11 @@ const Navbar = () => {
                             }
                         </ul>
                     </nav>
+                    {
+                        isLoggedIn ? (
+                            <NavLink className="profile_navbar" to="/profile"><CgProfile className='icon_profile' style={{ fontSize: "3.5rem", color: "white" }} /></NavLink>
+                        ) : ""
+                    }
                 </div>
             </header>
         </div>
