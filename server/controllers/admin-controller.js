@@ -132,11 +132,10 @@ const replyToUser = async (req, res) => {
                 from: `MERN Support <${senderEmail}>`,
                 to: userEmail,
                 subject: 'Reply to Your Query',
-                text: `MERN Team :- ${message.query}`
+                text: `We get a Query from User with Email : ${userEmail}\nReply from MERN Team :- ${message.query}`
             };
 
             await transporter.sendMail(mailOptions);
-
             res.status(200).json({ message: "Replied Successfully to User's Query." })
         } catch (error) {
             res.status(500).json({ message: "Server Error in Sending Mail." })
